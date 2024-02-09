@@ -4,8 +4,9 @@ from flask_migrate import Migrate
 from dotenv import load_dotenv
 from os import environ
 
-
+# basic configurations
 app = Flask(__name__)
+db = SQLAlchemy()
 load_dotenv()
 
 app.secret_key = environ.get("SECRET_KEY")
@@ -14,6 +15,5 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = environ.get(
     "SQLALCHEMY_TRACK_MODIFICATIONS")
 app.json.compact = False
 
-db = SQLAlchemy()
 migrate = Migrate(app, db)
 db.init_app(app)
