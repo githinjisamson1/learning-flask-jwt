@@ -11,7 +11,7 @@ def seed_database():
 
     for _ in range(5):
         user = User(
-            username=fake.unique.username(),
+            username=fake.unique.user_name(),
             email=fake.unique.email(),
             password=fake.unique.password()
 

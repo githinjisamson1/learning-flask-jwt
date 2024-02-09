@@ -1,12 +1,11 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from models import db
 from dotenv import load_dotenv
 from os import environ
 
 # basic configurations
 app = Flask(__name__)
-db = SQLAlchemy()
 load_dotenv()
 
 app.secret_key = environ.get("SECRET_KEY")
