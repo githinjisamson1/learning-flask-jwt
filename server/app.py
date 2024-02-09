@@ -1,21 +1,10 @@
-from flask import Flask, make_response, jsonify
-
-app = Flask(__name__)
+from flask import Flask
 
 
-@app.route("/")
-def index():
-    response_body = {
-        "success": True,
-        "message": "Hello world"
-    }
+# create application factory
+def create_app():
+    app = Flask(__name__)
 
-    response = make_response(jsonify(response_body), 200)
+    app.config.from_prefixed_env()
 
-    response.headers["Content-Type"] = "application/json"
-
-    return response
-
-
-if __name__ == "__main__":
-    app.run(port=5555, debug=True)
+    return app
