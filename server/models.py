@@ -1,10 +1,12 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy_serializer import SerializerMixin
 # from uuid import uuid4
 
 db = SQLAlchemy()
 
 
-class User(db.Model):
+# wil contain models
+class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)

@@ -4,7 +4,7 @@ from models import db
 from dotenv import load_dotenv
 from os import environ
 
-# basic configurations
+# contains basic configurations
 app = Flask(__name__)
 load_dotenv()
 

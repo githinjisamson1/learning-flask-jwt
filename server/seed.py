@@ -5,7 +5,7 @@ from config import db, app
 fake = Faker()
 
 
-# function to seed the database
+# function to seed database
 def seed_database():
     User.query.delete()
 
