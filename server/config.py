@@ -1,13 +1,17 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from python_dotenv import load_dotenv
+from os import environ
 
 
 app = Flask(__name__)
+load_dotenv()
 
-app.secret_key = "qwertyuiopasdfghjkl"
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.secret_key = environ.get("SECRET_KEY")
+app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("SQLALCHEMY_DATABASE_URI")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = environ.get(
+    "SQLALCHEMY_TRACK_MODIFICATIONS")
 app.json.compact = False
 
 db = SQLAlchemy()
