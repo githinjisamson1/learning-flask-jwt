@@ -2,16 +2,18 @@ from flask import Blueprint, make_response, jsonify, request
 from flask_restful import Api, Resource, reqparse
 from models import db, User
 
+# user data
 parser = reqparse.RequestParser()
 parser.add_argument('username', required=True, help="Username required")
 parser.add_argument('email', required=True, help="Email required")
 parser.add_argument('password', required=True, help="Password required")
 
-
+# user_bp
 user_bp = Blueprint("user_bp", __name__)
 api = Api(user_bp)
 
 
+# resources
 class Index(Resource):
     def get(self):
         return {"success": True, "message": "Hello World"}
@@ -74,6 +76,7 @@ class UserById(Resource):
         return make_response(jsonify({"success": True, "message": "User deleted successfully"}))
 
 
+# URLs
 api.add_resource(Index, "/")
 api.add_resource(Users, "/users")
 api.add_resource(UserById, "/users/<int:user_id>")
