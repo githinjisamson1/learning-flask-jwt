@@ -1,6 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
+from sqlalchemy.ext.hybrid import hybrid_property
+from config import bcrypt
+
 # from uuid import uuid4
 
 db = SQLAlchemy()
@@ -15,6 +18,8 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
+    
+    
 
     # validate username
     @validates("username")

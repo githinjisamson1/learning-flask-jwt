@@ -3,6 +3,7 @@ from flask_migrate import Migrate
 from models import db
 from dotenv import load_dotenv
 from os import environ
+from flask.ext.bcrypt import Bcrypt
 
 # contains basic configurations
 app = Flask(__name__)
@@ -16,3 +17,4 @@ app.json.compact = False
 
 migrate = Migrate(app, db)
 db.init_app(app)
+bcrypt = Bcrypt(app)
