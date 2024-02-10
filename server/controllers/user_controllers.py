@@ -1,6 +1,8 @@
 from flask import Blueprint, make_response, jsonify, request
 from flask_restful import Api, Resource, reqparse
-from models import db, User
+from models import User
+from config import db, bcrypt
+
 
 # user data
 parser = reqparse.RequestParser()
@@ -16,7 +18,7 @@ api = Api(user_bp)
 # resources
 class Index(Resource):
     def get(self):
-        return {"success": True, "message": "Hello World"}
+        return {"success": True, "message": "Hello World"}, 200
 
 
 class Users(Resource):
@@ -31,7 +33,8 @@ class Users(Resource):
         new_user = User(
             username=args["username"],
             email=args["email"],
-            password=args["password"]
+            _password_hash=bcrypt.generate_password_hash(
+                args["password"].encode('utf-8'))
         )
 
         db.session.add(new_user)

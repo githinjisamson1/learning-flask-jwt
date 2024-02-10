@@ -1,6 +1,6 @@
 from models import User
 from faker import Faker
-from config import db, app
+from config import db, app, bcrypt
 
 fake = Faker()
 
@@ -9,11 +9,34 @@ fake = Faker()
 def seed_database():
     User.query.delete()
 
-    for _ in range(5):
+    # static values
+    usernames = [
+        "johndoe",
+        "julianamonroe",
+        "briankimani",
+        "mayaandreas"
+    ]
+
+    emails = [
+        "johndoe1@gmail.com",
+        "julianamonroe2@gmail.com",
+        "briankimani3@gmail.com",
+        "mayaandreas4@gmail.com"
+    ]
+
+    passwords = [
+        "passjohndoe",
+        "passjulianamonroe",
+        "passbriankimani",
+        "passmayaandreas"
+    ]
+
+    for i in range(4):
         user = User(
-            username=fake.unique.user_name(),
-            email=fake.unique.email(),
-            password=fake.unique.password()
+            username=usernames[i],
+            email=emails[i],
+            _password_hash=bcrypt.generate_password_hash(
+                passwords[i].encode('utf-8'))
 
         )
         db.session.add(user)

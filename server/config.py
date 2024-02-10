@@ -1,12 +1,14 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from models import db
 from dotenv import load_dotenv
 from os import environ
-from flask.ext.bcrypt import Bcrypt
+from flask_bcrypt import Bcrypt
+
 
 # contains basic configurations
 app = Flask(__name__)
+db = SQLAlchemy()
 load_dotenv()
 
 app.secret_key = environ.get("SECRET_KEY")
@@ -18,3 +20,6 @@ app.json.compact = False
 migrate = Migrate(app, db)
 db.init_app(app)
 bcrypt = Bcrypt(app)
+
+# !resolve circular import error
+# ensure db = SQLAlchemy is initialized here
