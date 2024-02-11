@@ -2,7 +2,7 @@ from flask import Blueprint, make_response, jsonify, request
 from flask_restful import Api, Resource, reqparse
 from config import db, bcrypt
 from models import User
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt
 
 # will contain Register and Login resources
 auth_bp = Blueprint("auth_bp", __name__)
@@ -60,7 +60,9 @@ class Login(Resource):
 class Whoami(Resource):
     @jwt_required()
     def get(self):
-        return make_response(jsonify({"message": "Hello"}))
+        # returns jwt claims as python dictionary i.e., payload for e.g., johndoe
+        claims = get_jwt()
+        return make_response(jsonify({"message": "Whoami", "claims": claims}))
 
 
 api.add_resource(Register, "/register")

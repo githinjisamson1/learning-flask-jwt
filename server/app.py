@@ -9,6 +9,14 @@ app.register_blueprint(user_bp)
 app.register_blueprint(auth_bp, url_prefix="/auth")
 
 
+# additional claims
+@jwt.additional_claims_loader
+def make_additional_claims(identity):
+    if identity == "johndoe":
+        return {"is_staff": True}
+    return {"is_staff": False}
+
+
 # jwt error handlers => handle invalid, missing, expired tokens
 @jwt.expired_token_loader
 def expired_token_callback(jwt_header, jwt_data):
