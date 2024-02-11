@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from dotenv import load_dotenv
 from os import environ
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
 
 
 # contains basic configurations
@@ -20,6 +21,7 @@ app.json.compact = False
 migrate = Migrate(app, db)
 db.init_app(app)
 bcrypt = Bcrypt(app)
+jwt = JWTManager(app)
 
 # !resolve circular import error
 # ensure db = SQLAlchemy is initialized here
