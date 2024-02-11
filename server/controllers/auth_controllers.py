@@ -1,7 +1,8 @@
-from flask import Blueprint, make_response, jsonify
+from flask import Blueprint, make_response, jsonify, request
 from flask_restful import Api, Resource, reqparse
 from config import db, bcrypt
 from models import User
+from flask_jwt_extended import create_access_token, create_refresh_token
 
 auth_bp = Blueprint("auth_bp", __name__)
 api = Api(auth_bp)
@@ -31,4 +32,26 @@ class Register(Resource):
         return make_response(jsonify(new_user.to_dict()), 201)
 
 
+class Login(Resource):
+    def post(self):
+        data = request.get_json()
+
+        user = User.query.filter_by(username=data.get("username")).first()
+
+        # if user exists and password matches
+        if user and user.authenticate(data.get("password")):
+            access_token = create_access_token(identity=user.username)
+            refresh_token = create_refresh_token(identity=user.username)
+
+            return make_response(jsonify({
+                "message": "Login successful",
+                "tokens": {
+                    "access": access_token,
+                    "resfresh": refresh_token
+                }
+            }), 200)
+        return make_response(jsonify({"error": "Invalid username or password"}), 401)
+
+
 api.add_resource(Register, "/register")
+api.add_resource(Login, "/login")
