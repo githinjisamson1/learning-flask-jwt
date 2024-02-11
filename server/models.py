@@ -10,7 +10,8 @@ class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
     # columns
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True,
+                   )
     username = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False)
     _password_hash = db.Column(db.String, nullable=False)
@@ -34,7 +35,6 @@ class User(db.Model, SerializerMixin):
             self._password_hash, password.encode('utf-8'))
 
     # validate username
-
     @validates("username")
     def validate_username(self, key, username):
         if not username:

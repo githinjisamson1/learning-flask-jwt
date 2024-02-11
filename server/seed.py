@@ -31,6 +31,7 @@ def seed_database():
         "passmayaandreas"
     ]
 
+    # create 4 user instances
     for i in range(4):
         user = User(
             username=usernames[i],
