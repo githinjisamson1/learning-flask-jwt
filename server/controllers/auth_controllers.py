@@ -45,6 +45,7 @@ class Login(Resource):
             access_token = create_access_token(identity=user.username)
             refresh_token = create_refresh_token(identity=user.username)
 
+            # generate token-pair:{access, refresh}
             return make_response(jsonify({
                 "message": "Login successful",
                 "tokens": {
@@ -52,7 +53,7 @@ class Login(Resource):
                     "refresh": refresh_token
                 }
             }), 200)
-            
+
         return make_response(jsonify({"error": "Invalid username or password"}), 401)
 
 

@@ -20,8 +20,14 @@ class Users(Resource):
     # @jwt_required() to protect routes
     @jwt_required()
     def get(self):
-        users_lc = [user.to_dict() for user in User.query.all()]
+        page = request.args.get("page", default=1, type=int)
+        per_page = request.args.get("per_page", default=2, type=int)
 
+        users = User.query.paginate(
+            page=page,
+            per_page=per_page
+        )
+        users_lc = [user.to_dict() for user in users]
         return make_response(jsonify(users_lc), 200)
 
 
