@@ -5,12 +5,12 @@ from config import db
 from flask_jwt_extended import jwt_required, get_jwt
 
 
-# user_bp
+# !user_bp
 user_bp = Blueprint("user_bp", __name__)
 api = Api(user_bp)
 
 
-# resources
+# !resources
 class Index(Resource):
     def get(self):
         return {"success": True, "message": "Hello World"}, 200
@@ -79,7 +79,7 @@ class UserById(Resource):
         return make_response(jsonify({"success": True, "message": "User deleted successfully"}))
 
 
-# URLs
+# !URLs
 api.add_resource(Index, "/")
 api.add_resource(Users, "/users")
 api.add_resource(UserById, "/users/<int:user_id>")

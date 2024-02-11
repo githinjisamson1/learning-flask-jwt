@@ -5,7 +5,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 # from uuid import uuid4
 
 
-# will contain models
+# !will contain models
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
@@ -16,6 +16,7 @@ class User(db.Model, SerializerMixin):
     email = db.Column(db.String, nullable=False)
     _password_hash = db.Column(db.String, nullable=False)
 
+    # !password hashing
     # getter
     @hybrid_property
     def password_hash(self):
@@ -34,6 +35,7 @@ class User(db.Model, SerializerMixin):
         return bcrypt.check_password_hash(
             self._password_hash, password.encode('utf-8'))
 
+    # !validations
     # validate username
     @validates("username")
     def validate_username(self, key, username):

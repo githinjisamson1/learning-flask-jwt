@@ -1,11 +1,8 @@
 from models import User
-from faker import Faker
 from config import db, app, bcrypt
 
-fake = Faker()
 
-
-# function to seed database
+# !function to seed database
 def seed_database():
     User.query.delete()
 

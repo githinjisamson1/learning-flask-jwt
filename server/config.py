@@ -7,7 +7,7 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 
 
-# contains basic configurations
+# !contains basic configurations
 app = Flask(__name__)
 db = SQLAlchemy()
 load_dotenv()

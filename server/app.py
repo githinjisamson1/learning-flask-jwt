@@ -21,6 +21,7 @@ def user_lookup_callback(jwt_header, jwt_data):
 
 
 # !additional claims == no need to query db to check if staff or not
+# adding attributes to existing payload
 @jwt.additional_claims_loader
 def make_additional_claims(identity):
     if identity == "johndoe":
