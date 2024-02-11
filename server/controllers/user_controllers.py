@@ -26,6 +26,7 @@ class Users(Resource):
 
 
 class UserById(Resource):
+    @jwt_required()
     def get(self, user_id):
         user = User.query.filter_by(id=user_id).first()
 
@@ -34,6 +35,7 @@ class UserById(Resource):
 
         return make_response(jsonify(user.to_dict()), 200)
 
+    @jwt_required()
     def patch(self, user_id):
         data = request.get_json()
 
@@ -49,6 +51,7 @@ class UserById(Resource):
 
         return make_response(jsonify(user.to_dict()), 200)
 
+    @jwt_required()
     def delete(self, user_id):
         user = User.query.filter_by(id=user_id).first()
 
