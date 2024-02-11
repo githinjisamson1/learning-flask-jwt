@@ -2,14 +2,24 @@ from config import app, jwt
 from controllers.user_controllers import user_bp
 from controllers.auth_controllers import auth_bp
 from flask import make_response, jsonify
+from models import User
 
 
-# will register blueprints here
+# !will register blueprints here
 app.register_blueprint(user_bp)
 app.register_blueprint(auth_bp, url_prefix="/auth")
 
 
-# additional claims == no need to query db to check if staff or not
+# !automatic user loading
+@jwt.user_lookup_loader
+def user_lookup_callback(jwt_header, jwt_data):
+    # jwt_data => actual claims
+    identity = jwt_data["sub"]
+
+    return User.query.filter_by(username=identity).one_or_none()
+
+
+# !additional claims == no need to query db to check if staff or not
 @jwt.additional_claims_loader
 def make_additional_claims(identity):
     if identity == "johndoe":
@@ -17,7 +27,7 @@ def make_additional_claims(identity):
     return {"is_staff": False}
 
 
-# jwt error handlers => handle invalid, missing, expired tokens
+# !jwt error handlers => handle invalid, missing, expired tokens
 @jwt.expired_token_loader
 def expired_token_callback(jwt_header, jwt_data):
     return make_response(jsonify({
