@@ -4,12 +4,6 @@ from models import User
 from config import db, bcrypt
 
 
-# user data
-parser = reqparse.RequestParser()
-parser.add_argument('username', required=True, help="Username required")
-parser.add_argument('email', required=True, help="Email required")
-parser.add_argument('password', required=True, help="Password required")
-
 # user_bp
 user_bp = Blueprint("user_bp", __name__)
 api = Api(user_bp)
@@ -26,21 +20,6 @@ class Users(Resource):
         users_lc = [user.to_dict() for user in User.query.all()]
 
         return make_response(jsonify(users_lc), 200)
-
-    def post(self):
-        args = parser.parse_args()
-
-        new_user = User(
-            username=args["username"],
-            email=args["email"],
-            _password_hash=bcrypt.generate_password_hash(
-                args["password"].encode('utf-8'))
-        )
-
-        db.session.add(new_user)
-        db.session.commit()
-
-        return make_response(jsonify(new_user.to_dict()), 201)
 
 
 class UserById(Resource):
