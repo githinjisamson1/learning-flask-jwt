@@ -47,7 +47,7 @@ class Login(Resource):
                 "message": "Login successful",
                 "tokens": {
                     "access": access_token,
-                    "resfresh": refresh_token
+                    "refresh": refresh_token
                 }
             }), 200)
         return make_response(jsonify({"error": "Invalid username or password"}), 401)
