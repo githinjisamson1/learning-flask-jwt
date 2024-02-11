@@ -16,6 +16,7 @@ def user_lookup_callback(jwt_header, jwt_data):
     # jwt_data => actual claims
     identity = jwt_data["sub"]
 
+    # query SQLAlchemy
     return User.query.filter_by(username=identity).one_or_none()
 
 
