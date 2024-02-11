@@ -67,3 +67,12 @@ class User(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f"User {self.username} {self.email}"
+
+
+class TokenBlocklist(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    jti = db.Column(db.String, nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+
+    def __repr__(self):
+        return f"TokenBlocklist {self.jti}"
