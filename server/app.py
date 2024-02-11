@@ -9,7 +9,7 @@ app.register_blueprint(user_bp)
 app.register_blueprint(auth_bp, url_prefix="/auth")
 
 
-# additional claims
+# additional claims == no need to query db to check if staff or not
 @jwt.additional_claims_loader
 def make_additional_claims(identity):
     if identity == "johndoe":

@@ -2,7 +2,7 @@ from flask import Blueprint, make_response, jsonify, request
 from flask_restful import Api, Resource, reqparse
 from models import User
 from config import db
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt
 
 
 # user_bp
@@ -17,20 +17,27 @@ class Index(Resource):
 
 
 class Users(Resource):
-    # @jwt_required() to protect routes
+    # protect routes
     @jwt_required()
     def get(self):
-        # query string parameters => /users?page=1&per_page=3
-        page = request.args.get("page", default=1, type=int)
-        per_page = request.args.get("per_page", default=2, type=int)
+        # jwt payload
+        claims = get_jwt()
 
-        # implement pagination == legacy query API
-        users = User.query.paginate(
-            page=page,
-            per_page=per_page
-        )
-        users_lc = [user.to_dict() for user in users]
-        return make_response(jsonify({"users": users_lc}), 200)
+        # access control
+        if claims.get("is_staff") == True:
+            # query string parameters => /users?page=1&per_page=3
+            page = request.args.get("page", default=1, type=int)
+            per_page = request.args.get("per_page", default=2, type=int)
+
+            # implement pagination == legacy query API
+            users = User.query.paginate(
+                page=page,
+                per_page=per_page
+            )
+            users_lc = [user.to_dict() for user in users]
+            return make_response(jsonify({"users": users_lc}), 200)
+
+        return make_response(jsonify({"error": "User is not staff"}), 401)
 
 
 class UserById(Resource):
