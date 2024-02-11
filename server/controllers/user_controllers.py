@@ -1,7 +1,7 @@
 from flask import Blueprint, make_response, jsonify, request
 from flask_restful import Api, Resource, reqparse
 from models import User
-from config import db, bcrypt
+from config import db
 from flask_jwt_extended import jwt_required
 
 
@@ -11,13 +11,13 @@ api = Api(user_bp)
 
 
 # resources
-
 class Index(Resource):
     def get(self):
         return {"success": True, "message": "Hello World"}, 200
 
 
 class Users(Resource):
+    # @jwt_required() to protect routes
     @jwt_required()
     def get(self):
         users_lc = [user.to_dict() for user in User.query.all()]

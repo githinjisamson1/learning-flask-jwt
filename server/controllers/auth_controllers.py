@@ -4,6 +4,7 @@ from config import db, bcrypt
 from models import User
 from flask_jwt_extended import create_access_token, create_refresh_token
 
+# will contain Register and Login resources
 auth_bp = Blueprint("auth_bp", __name__)
 api = Api(auth_bp)
 
@@ -40,6 +41,7 @@ class Login(Resource):
 
         # if user exists and password matches
         if user and user.authenticate(data.get("password")):
+            # access: for access, refresh: for security
             access_token = create_access_token(identity=user.username)
             refresh_token = create_refresh_token(identity=user.username)
 
@@ -50,6 +52,7 @@ class Login(Resource):
                     "refresh": refresh_token
                 }
             }), 200)
+            
         return make_response(jsonify({"error": "Invalid username or password"}), 401)
 
 

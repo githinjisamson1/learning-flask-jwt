@@ -16,6 +16,7 @@ app.secret_key = environ.get("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("SQLALCHEMY_DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = environ.get(
     "SQLALCHEMY_TRACK_MODIFICATIONS")
+app.config["JWT_SECRET_KEY"]=environ.get("JWT_SECRET_KEY")
 app.json.compact = False
 
 migrate = Migrate(app, db)
