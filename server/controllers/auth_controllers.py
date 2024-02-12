@@ -81,11 +81,20 @@ class RefreshAccess(Resource):
         return {"access_token": new_access_token}
 
 
+# Logout steps
+# 1. TokenBlocklist model => models.py
+# 2. @jwt_token-in_blocklist_loader => app.py
+# 3. Logout resource => auth_controllers.py
+
 class Logout(Resource):
-    @jwt_required()
+    # can be access or refresh
+    @jwt_required(verify_type=False)
     def get(self):
         # get jti
         jti = get_jwt()["jti"]
+        
+        # get token_type
+        token_type = get_jwt()["type"]
 
         # new_token_b/ocklist instance
         new_token_blocklist = TokenBlocklist(
@@ -96,7 +105,7 @@ class Logout(Resource):
         db.session.add(new_token_blocklist)
         db.session.commit()
 
-        return make_response(jsonify({"message": "Logout successful"}), 200)
+        return make_response(jsonify({"message": f"{token_type} token revoked successfully"}), 200)
 
 
 api.add_resource(Register, "/register")
