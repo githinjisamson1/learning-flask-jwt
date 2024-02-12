@@ -1,7 +1,7 @@
 from flask import Blueprint, make_response, jsonify, request
 from flask_restful import Api, Resource, reqparse
 from config import db, bcrypt
-from models import User
+from models import User, TokenBlocklist
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt, current_user, get_jwt_identity
 
 # !will contain Register and Login resources
@@ -84,8 +84,19 @@ class RefreshAccess(Resource):
 class Logout(Resource):
     @jwt_required()
     def get(self):
+        # get jti
+        jti = get_jwt()["jti"]
 
-        pass
+        # new_token_b/ocklist instance
+        new_token_blocklist = TokenBlocklist(
+            jti=jti
+        )
+
+        # add to db/effect changes
+        db.session.add(new_token_blocklist)
+        db.session.commit()
+
+        return make_response(jsonify({"message": "Logout successful"}), 200)
 
 
 api.add_resource(Register, "/register")
