@@ -4,6 +4,7 @@ from config import db, app, bcrypt
 
 # !function to seed database
 def seed_database():
+    # empty records
     User.query.delete()
 
     # static values

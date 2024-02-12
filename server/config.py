@@ -20,6 +20,7 @@ app.config["SQLALCHEMY_ECHO"] = environ.get("SQLALCHEMY_ECHO")
 app.config["JWT_SECRET_KEY"] = environ.get("JWT_SECRET_KEY")
 app.json.compact = False
 
+# !instantiations
 migrate = Migrate(app, db)
 db.init_app(app)
 bcrypt = Bcrypt(app)

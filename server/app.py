@@ -61,6 +61,7 @@ def token_in_blocklist_callback(jwt_header, jwt_data):
 
     token = TokenBlocklist.query.filter_by(jti=jti).first()
 
+    # msg: Token has been revoked
     return True if token else False
     # return token is not None
 

@@ -78,7 +78,7 @@ class RefreshAccess(Resource):
         # similar to jwt_data["sub"] OR get_jwt()["sub"]
         identity = get_jwt_identity()
         new_access_token = create_access_token(identity=identity)
-        return {"access_token": new_access_token}
+        return make_response(jsonify({"access_token": new_access_token}), 200)
 
 
 # Logout steps
