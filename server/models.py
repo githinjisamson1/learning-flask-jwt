@@ -69,6 +69,9 @@ class User(db.Model, SerializerMixin):
         return f"User {self.username} {self.email}"
 
 
+# !keep track of revoked tokens
+# upon /logout, jti will be added to TokenBlocklist
+# jti => unique identifier for each token
 class TokenBlocklist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     jti = db.Column(db.String, nullable=False)

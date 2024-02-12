@@ -81,7 +81,15 @@ class RefreshAccess(Resource):
         return {"access_token": new_access_token}
 
 
+class Logout(Resource):
+    @jwt_required()
+    def get(self):
+
+        pass
+
+
 api.add_resource(Register, "/register")
 api.add_resource(Login, "/login")
 api.add_resource(Whoami, "/whoami")
 api.add_resource(RefreshAccess, "/refresh_access")
+api.add_resource(Logout, "/logout")

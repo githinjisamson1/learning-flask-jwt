@@ -2,7 +2,7 @@ from config import app, jwt
 from controllers.user_controllers import user_bp
 from controllers.auth_controllers import auth_bp
 from flask import make_response, jsonify
-from models import User
+from models import User, TokenBlocklist
 
 
 # !will register blueprints here
@@ -52,6 +52,17 @@ def missing_token_callback(error):
         "message": "Request does not contain valid token",
         "error": "authorization_header"
     }), 401)
+
+
+@jwt.token_in_blocklist_loader
+def token_in_blocklist_callback(jwt_header, jwt_data):
+    # jtw_data == claims9 == get_jwt() == contains hidden or encoded info/info about out token
+    jti = jwt_data["jti"]
+
+    token = TokenBlocklist.query.filter_by(jti=jti).first()
+
+    return True if token else False
+    # return token is not None
 
 
 if __name__ == "__main__":
