@@ -1,6 +1,7 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 import uuid
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///example.db'
@@ -10,6 +11,9 @@ db = SQLAlchemy(app)
 class MyModel(db.Model):
     id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String(80), nullable=False)
+    created_at = db.Column(db.DateTime(), default=datetime.utcnow)
+    updated_at = db.Column(
+        db.DateTime(), default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def __repr__(self):
         return f'<MyModel {self.name}>'
