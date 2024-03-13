@@ -2,7 +2,7 @@ from flask import Blueprint, make_response, jsonify, request
 from flask_restful import Api, Resource, reqparse
 from models import User
 from config import db
-from flask_jwt_extended import jwt_required, get_jwt
+from flask_jwt_extended import jwt_required, get_jwt, current_user
 
 
 # !user_bp
@@ -30,12 +30,16 @@ class Users(Resource):
             per_page = request.args.get("per_page", default=2, type=int)
 
             # implement pagination == legacy query API
-            users = User.query.paginate(
-                page=page,
-                per_page=per_page
-            )
-            users_lc = [user.to_dict() for user in users]
-            return make_response(jsonify({"users": users_lc}), 200)
+            # users = User.query.paginate(
+            #     page=page,
+            #     per_page=per_page
+            # )
+            # users_lc = [user.to_dict() for user in users]
+            # return make_response(jsonify({"users": users_lc}), 200)
+
+            # TODO:
+            user = User.query.filter_by(username=current_user.username).first()
+            return make_response(jsonify(user.to_dict()), 200)
 
         return make_response(jsonify({"error": "User is not staff"}), 401)
 

@@ -67,4 +67,6 @@ def token_in_blocklist_callback(jwt_header, jwt_data):
 
 
 if __name__ == "__main__":
+    # creating database tables
+    # db.create_all()
     app.run(port=5555, debug=True)

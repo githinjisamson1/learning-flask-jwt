@@ -17,6 +17,7 @@ parser.add_argument('password', required=True, help="Password required")
 
 # !auth resources
 class Register(Resource):
+    @jwt_required()
     def post(self):
         args = parser.parse_args()
 
@@ -51,7 +52,8 @@ class Login(Resource):
                 "tokens": {
                     "access": access_token,
                     "refresh": refresh_token
-                }
+                },
+                # "user": current_user
             }), 200)
 
         return make_response(jsonify({"error": "Invalid username or password"}), 401)
@@ -92,7 +94,7 @@ class Logout(Resource):
     def get(self):
         # get jti
         jti = get_jwt()["jti"]
-        
+
         # get token_type
         token_type = get_jwt()["type"]
 
