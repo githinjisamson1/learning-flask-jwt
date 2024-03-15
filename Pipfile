@@ -24,6 +24,7 @@ python-dotenv = "*"
 flask-restplus = "*"
 flask-bcrypt = "*"
 flask-jwt-extended = "*"
+cloudinary = "*"
 
 [dev-packages]
 
