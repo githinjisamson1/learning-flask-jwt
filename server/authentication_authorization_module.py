@@ -37,3 +37,37 @@ class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
+    
+
+# Setup Flask-Security
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+security = Security(app, user_datastore)
+
+
+# Login route using Flask-JWT
+@app.route('/login', methods=['POST'])
+def login():
+    email = request.json.get('email', None)
+    password = request.json.get('password', None)
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user or not user.check_password(password):
+        return jsonify({"msg": "Invalid credentials"}), 401
+
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token=access_token), 200
+
+# Protected route requiring authentication and authorization
+
+
+@app.route('/protected')
+@jwt_required()
+@roles_required('admin')
+def protected_route():
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
